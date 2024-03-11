@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"  href="/css/responsivo.css">
+    <style>
+        .body {
+            height: 100vh;
+            width: 100vw;
+            background-image: url("https://wallpaperaccess.com/full/1936431.jpg");
+            background-size: 100% 100%;
+        }
+        form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            display: flex;
+            flex-direction: row;
+            justify-content:center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.849);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            backdrop-filter: blur(3px);
+            height: 50vh;
+            width: 40vw;
+            border-radius: 1rem;
+        }
+        .conteudo{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1vh;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+        }
+        .dados{
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-size: small;
+        }
+        input{
+            border-radius: 1rem;
+            text-align: center;
+            outline: none;
+            background: rgba(128, 128, 128, 0.753);
+            border: none;
+            padding: 5px;
+        }
+        fieldset{
+
+            border-radius: 1rem;
+            height: 90%;
+            width: 100%;
+        }
+        legend{
+            text-align: center;
+            text-shadow: 2px 2px 2px black;
+        }
+        button {
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            background-color: #401e13b7;
+            color: white;
+            box-shadow: 1px 1px 2px white;
+            cursor: pointer;
+            transition: 1s;
+        }
+        button:hover{
+            transform: scale(1.1);
+            background-color: #753e2c;
+        }
+        @media screen and (max-width:530px){
+            form {
+                height: 50vh;
+                width: 40vh;
+            }
+        }
+        @media screen and (max-width:450px){
+            form {
+                height: 80vh;
+                width: 70vw;
+            }
+        }
+        @media screen and (max-width:1900px){
+            form {
+                height: 50vh;
+                width: 40vh;
+            }
+        }
+            </style>
+    <title>Rockefelix</title>
+</head>
+<body>
+    <div class="body">
+        <form action="/mensagem" method="post">
+            <fieldset>
+                <legend><b>ROCKEFELIX</b></legend>
+                <div class="conteudo">
+                    <div class="dados">
+                        <label for="nome">Seu Nome</label>
+                        <input type="text" name="nome" id="nome">
+                    </div>
+                    <div class="dados">
+                        <label for="telefone">Whatsapp</label>
+                        <input type="tel" name="telefone" id="telefone" placeholder="Ex: 11 91111-1111">
+                    </div>
+                    <div class="dados">
+                        <label for="data">Data</label>
+                        <input type="date" name="data" id="data">
+                    </div>
+                    <div class="dados">
+                        <label for="horario">Horário</label>
+                        <input type="time" name="horario" id="horario">
+                    </div>
+                    <button type="submit">Agendar</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>
