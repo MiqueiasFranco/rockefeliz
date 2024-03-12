@@ -1,8 +1,8 @@
-from flask import Flask,render_template, request
+from flask import Flask,render_template, request, redirect,flash
 from datetime import datetime
 import mysql.connector
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = "deus-é-maior"
 @app.route("/")
 def home():
     
@@ -14,11 +14,15 @@ def home():
 
 @app.route("/mensagem", methods=["POST"])
 def mensagem():
+    # RECEBENDO INFORMAÇÕES DO FORMULÁRIO
     numero =  str(request.form.get('telefone'))
     nome = request.form.get('nome')
-    data = str(request.form.get('data'))
+    data = request.form.get('data')
+    dataformatada = datetime.strptime(f'{data}', "%Y-%m-%d").strftime("%d-%m-%y")
     horario =  request.form.get('horario')
     horarioreal = datetime.strptime(horario,'%H:%M').strftime('%H:%M:%S')
+    datahorario = str(f'{data} '+horarioreal)
+    # CONEXÃO COM BANCO DE DADOS MYSQL:
     connector = mysql.connector.connect(database='cadastro', host='localhost', user='root', password='')
     cursor =  connector.cursor()
 
@@ -27,26 +31,24 @@ def mensagem():
         analiseTabela = cursor.fetchall()
         pessoascadastradas=[]
         horarioscadastrados=[]
-        diasagendados = []
 
         for dado in analiseTabela:
             nomepessoa = dado[2]
             dataagendada= dado[3]
-            horariopessoa =  dado[4]
             pessoascadastradas.append(nomepessoa)
-            horarioscadastrados.append(str(horariopessoa))
-            diasagendados.append(str(dataagendada))
+            horarioscadastrados.append(str(dataagendada))
         if nome in pessoascadastradas:
-            return render_template("error.html")
+            flash('PESSOA JÁ AGENDADA')
+            return redirect('/')
         
-
-        elif data in diasagendados:
-            if horarioreal in horarioscadastrados:
-                return render_template("error.html")
+        elif datahorario in horarioscadastrados:
+            flash("HORÁRIO OCUPADO")
+            return redirect("/")
+        
         else:
-            print(data, diasagendados,horarioreal, horarioscadastrados)
-            cursor.execute(f"INSERT INTO cadastrados (id, numero, nome, dia, horario) VALUES (id ,'{numero}' , '{nome}' , '{data}'  , '{horarioreal}' );")
-            return render_template("mensagem.html",nome=nome,data=data,horario=horario)
+            cursor.execute(f"INSERT INTO cadastrados (id, numero, nome, dia ) VALUES (id ,'{numero}' , '{nome}' , '{datahorario}' );")
+            flash("AGENDADO COM SUCESSO!")
+            return redirect('/')
     
     if connector.is_connected:
         cursor.close()

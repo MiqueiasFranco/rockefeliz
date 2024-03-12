@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"  href="/css/responsivo.css">
     <style>
         .body {
-            height: 100vh;
-            width: 100vw;
+            height: 97vh;
+            width: 98vw;
             background-image: url("https://wallpaperaccess.com/full/1936431.jpg");
             background-size: 100% 100%;
         }
@@ -77,6 +76,17 @@
             transform: scale(1.1);
             background-color: #753e2c;
         }
+        .mensagemerro{
+            position: absolute;
+            top:10%;
+            left: 50%;
+            transform: translate(-50%);
+            color: white;
+            background-color: #753e2c;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
         @media screen and (max-width:530px){
             form {
                 height: 50vh;
@@ -98,32 +108,51 @@
             </style>
     <title>Rockefelix</title>
 </head>
+
 <body>
-    <div class="body">
-        <form action="/mensagem" method="post">
-            <fieldset>
-                <legend><b>ROCKEFELIX</b></legend>
-                <div class="conteudo">
-                    <div class="dados">
-                        <label for="nome">Seu Nome</label>
-                        <input type="text" name="nome" id="nome">
-                    </div>
-                    <div class="dados">
-                        <label for="telefone">Whatsapp</label>
-                        <input type="tel" name="telefone" id="telefone" placeholder="Ex: 11 91111-1111">
-                    </div>
-                    <div class="dados">
-                        <label for="data">Data</label>
-                        <input type="date" name="data" id="data">
-                    </div>
-                    <div class="dados">
-                        <label for="horario">Horário</label>
-                        <input type="time" name="horario" id="horario">
-                    </div>
-                    <button type="submit">Agendar</button>
+    {% block conteudo %}
+        <div class="body">
+            {% set mensagens = get_flashed_messages() %}
+            {% if mensagens[0] %}
+                <div class="mensagemerro">
+                    {{ mensagens[0] }}
                 </div>
-            </fieldset>
-        </form>
-    </div>
+            {% endif %}
+            {% if mensagens[1] %}
+                <div class="mensagemerro">
+                    {{ mensagens[1] }}
+                </div>
+            {% endif %}
+            {% if mensagens[2] %}
+                <div class="sucesso" id="sucesso">
+                    {{ mensagens[2] }}
+                </div>
+            {% endif %}
+            <form action="/mensagem" method="post">
+                <fieldset>
+                    <legend><b>ROCKEFELIX</b></legend>
+                    <div class="conteudo">
+                        <div class="dados">
+                            <label for="nome">Seu Nome</label>
+                            <input type="text" name="nome" id="nome" required >
+                        </div>
+                        <div class="dados">
+                            <label for="telefone">Whatsapp</label>
+                            <input type="tel" name="telefone" id="telefone" placeholder="Ex: 11 91111-1111" required>
+                        </div>
+                        <div class="dados">
+                            <label for="data">Data</label>
+                            <input type="date" name="data" id="data" required>
+                        </div>
+                        <div class="dados">
+                            <label for="horario">Horário</label>
+                            <input type="time" name="horario" id="horario" required>
+                        </div>
+                        <button type="submit">Agendar</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    {% endblock %}
 </body>
 </html>
