@@ -23,8 +23,14 @@ def mensagem():
     horarioreal = datetime.strptime(horario,'%H:%M').strftime('%H:%M:%S')
     datahorario = str(f'{data} '+horarioreal)
     # CONEXÃO COM BANCO DE DADOS MYSQL:
-    connector = mysql.connector.connect(database='cadastro', host='localhost', user='root', password='')
+    connector = mysql.connector.connect(database='railway',
+                                        host='viaduct.proxy.rlwy.net', 
+                                        user='root', 
+                                        password='cXFrDAMVhHtcoZNynUiVsFDmNtWNfghC',
+                                        port = '51229')
     cursor =  connector.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS cadastrados (id int primary key not null auto_increment, numero varchar(20), nome varchar(30), dia datetime);")
+
 
     if connector.is_connected:
         cursor.execute('SELECT * FROM cadastrados')
@@ -55,4 +61,5 @@ def mensagem():
         connector.close()
     
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run()
