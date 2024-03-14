@@ -29,7 +29,6 @@ def mensagem():
                                         password='cXFrDAMVhHtcoZNynUiVsFDmNtWNfghC',
                                         port = '51229')
     cursor =  connector.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS cadastrados (id int primary key not null auto_increment, numero varchar(20), nome varchar(30), dia datetime);")
 
 
     if connector.is_connected:
