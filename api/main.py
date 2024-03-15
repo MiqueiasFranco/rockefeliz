@@ -28,13 +28,12 @@ def mensagem():
     datahorario = str(f'{data} '+horarioreal)
     # CONEXÃO COM BANCO DE DADOS MYSQL:
     connector = mysql.connector.connect(
-                host=os.getenv("DATABASE_HOST"),
-                user=os.getenv("DATABASE_USERNAME"),
-                passwd=os.getenv("DATABASE_PASSWORD"),
-                db=os.getenv("DATABASE"),
-                autocommit=True,
-                # See https://planetscale.com/docs/concepts/secure-connections#ca-root-configuration
-                # to determine the path to your operating systems certificate file.
+                host= os.getenv("DB_HOST"),
+                user=os.getenv("DB_USERNAME"),
+                passwd= os.getenv("DB_PASSWORD"),
+                db= os.getenv("DB_NAME"),
+                autocommit = True,
+                
                 )
     cursor =  connector.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS cadastrados (id int primary key not null auto_increment, numero VARCHAR (20), nome VARCHAR (30), dia datetime );")
