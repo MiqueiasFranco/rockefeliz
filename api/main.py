@@ -1,6 +1,10 @@
 from flask import Flask,render_template, request, redirect,flash
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()
+import os
 import mysql.connector
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "deus-é-maior"
 @app.route("/")
@@ -23,12 +27,17 @@ def mensagem():
     horarioreal = datetime.strptime(horario,'%H:%M').strftime('%H:%M:%S')
     datahorario = str(f'{data} '+horarioreal)
     # CONEXÃO COM BANCO DE DADOS MYSQL:
-    connector = mysql.connector.connect(database='railway',
-                                        host='viaduct.proxy.rlwy.net', 
-                                        user='root', 
-                                        password='cXFrDAMVhHtcoZNynUiVsFDmNtWNfghC',
-                                        port = '51229')
+    connector = mysql.connector.connect(
+                host=os.getenv("DATABASE_HOST"),
+                user=os.getenv("DATABASE_USERNAME"),
+                passwd=os.getenv("DATABASE_PASSWORD"),
+                db=os.getenv("DATABASE"),
+                autocommit=True,
+                # See https://planetscale.com/docs/concepts/secure-connections#ca-root-configuration
+                # to determine the path to your operating systems certificate file.
+                )
     cursor =  connector.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS cadastrados (id int primary key not null auto_increment, numero VARCHAR (20), nome VARCHAR (30), dia datetime );")
 
 
     if connector.is_connected:
@@ -51,7 +60,7 @@ def mensagem():
             return redirect("/")
         
         else:
-            cursor.execute(f"INSERT INTO cadastrados (id, numero, nome, dia ) VALUES (id ,'{numero}' , '{nome}' , '{datahorario}' );")
+            cursor.execute(f"INSERT INTO cadastrados (id , numero , nome , dia ) VALUES (id, '{numero}', '{nome}', '{datahorario}' );")
             flash("AGENDADO COM SUCESSO!")
             return redirect('/')
     
